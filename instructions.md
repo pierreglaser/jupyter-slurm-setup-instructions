@@ -37,17 +37,18 @@ In practice, I recommend using the most portable version of these tools, which i
 as follows:
 
 ```sh
+#!/usr/bin/env bash
 if [[ $(uname) == "Darwin" ]]; then
     MINIFORGE_SCRIPT_NAME="Miniforge3-MacOSX-arm64.sh"
 elif [[ $(uname) == "Linux" ]]; then
-    MINIFORGE_SCRIPT_NAME="Miniforge3-Linux-aarch64.sh"
+    MINIFORGE_SCRIPT_NAME="Miniforge3-Linux-x86_64.sh"
 else
     echo "Unrecognized OS"
 fi
 if [[ ${MINIFORGE_SCRIPT_NAME} != "" ]]; then
     curl -LO "https://github.com/conda-forge/miniforge/releases/latest/download/${MINIFORGE_SCRIPT_NAME}"
     bash ${MINIFORGE_SCRIPT_NAME} -b -p ${HOME}/.local/miniforge
-    rm Miniforge3-MacOSX-arm64.sh
+    rm ${MINIFORGE_SCRIPT_NAME}
 fi
 ```
 
