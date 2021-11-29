@@ -63,6 +63,10 @@ Optionally, I recommend that login shells always activate your conda "base"
 environment by appending these lines to your shell rc file (~/.bashrc in Linux, ~/.bash_profile on MacOS, ~/.profile if none of these files exists):
 
 ```sh
+# $HOME/.local/bin is not included in MacOS $PATH by default
+if [[ $(uname) == "Darwin" ]]; then
+    export PATH=$HOME/.local/bin:$PATH
+fi
 source $HOME/.local/miniforge/etc/profile.d/conda.sh
 conda activate
 ```
