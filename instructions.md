@@ -33,10 +33,17 @@ First, some semantic clarification:
 
 ## Setup instructions
 
-In practice, I recommend using the most portable version of these tools, which is `miniforge`. Miniforge can be installed on UNIX compliant OS (MacOS, Linux)
-as follows:
+### Requirements
 
-```sh
+This tutorial is best suited for Unix environments: this means that ideally, your PC runs one of the following:
+- MacOS
+- a Linux distribution
+- a Windows version containing Windows Subsystem for Linux (WSL).
+
+### Installation using bash
+
+
+```bash
 #!/usr/bin/env bash
 if [[ $(uname) == "Darwin" ]]; then
     MINIFORGE_SCRIPT_NAME="Miniforge3-MacOSX-arm64.sh"
@@ -53,13 +60,14 @@ fi
 ```
 
 Optionally, I recommend that login shells always activate your conda "base"
-environment in your base environment by appending these lines to your shell rc file (~/.bashrc in Linux, ~/.bash_profile on MacOS, ~/.profile if none of these files exists):
+environment by appending these lines to your shell rc file (~/.bashrc in Linux, ~/.bash_profile on MacOS, ~/.profile if none of these files exists):
 
 ```sh
 source $HOME/.local/miniforge/etc/profile.d/conda.sh
 conda activate
 ```
 
+Systematically activating your base conda environment at startup will make you live in a user/home environment, and should prevent you from messing with system-wide installs.
 
 # Interactive development using jupyter(lab)
 
