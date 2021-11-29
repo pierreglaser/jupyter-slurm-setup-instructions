@@ -42,21 +42,29 @@ This tutorial is best suited for Unix environments: this means that ideally, you
 
 ### Installation using bash
 
-
 ```bash
+cat << EOF > miniforge_installation_script.sh && source miniforge_installation_script.sh || rm miniforge_installation_script.sh
 #!/usr/bin/env bash
 if [[ $(uname) == "Darwin" ]]; then
-    MINIFORGE_SCRIPT_NAME="Miniforge3-MacOSX-arm64.sh"
+    OS_ALIAS="MacOSX"
 elif [[ $(uname) == "Linux" ]]; then
-    MINIFORGE_SCRIPT_NAME="Miniforge3-Linux-x86_64.sh"
+    OS_ALIAS="Linux"
 else
     echo "Unrecognized OS"
 fi
+ARCH=$(uname -m)
+
+echo "ARCH: " $ARCH
+echo "OS: " $OS_ALIAS
+
+MINIFORGE_SCRIPT_NAME="Miniforge3-${OS_ALIAS}-${ARCH}.sh"
 if [[ ${MINIFORGE_SCRIPT_NAME} != "" ]]; then
-    curl -LO "https://github.com/conda-forge/miniforge/releases/latest/download/${MINIFORGE_SCRIPT_NAME}"
-    bash ${MINIFORGE_SCRIPT_NAME} -b -p ${HOME}/.local/miniforge
-    rm ${MINIFORGE_SCRIPT_NAME}
+    echo "Downloading ${MINIFORGE_SCRIPT_NAME}..."
+    curl -LO "https://github.com/conda-forge/miniforge/releases/latest/download/${MINIFORGE_SCRIPT_NAME}" && bash \
+        ${MINIFORGE_SCRIPT_NAME} -b -p ${HOME}/.local/miniforge
+    [ -f ${MINIFORGE_SCRIPT_NAME} ] && rm ${MINIFORGE_SCRIPT_NAME}
 fi
+EOF
 ```
 
 Optionally, I recommend that login shells always activate your conda "base"
@@ -96,8 +104,7 @@ conda create --name jupyterlab jupyterlab
 To run `jupyterlab` from a fresh bash shell, either activate the `jupyterlab` environment before typing the command:
 
 ```sh
-conda activate jupyterlab
-jupyter lab
+conda activate jupyterlab && jupyter lab
 ```
 
 Or alternatively (less recommended), you can symlink the `jupyterlab` command into an entry available in your $PATH:
