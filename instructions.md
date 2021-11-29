@@ -105,7 +105,9 @@ Here, we show how to create an environment for my project "my-project", and link
 ```sh
 conda create -n my-project-env ipykernel -y  # whenever you create a new environment, install ipykernel along side it to later connect it with jupyter..
 conda activate my-project-env
-python -m ipykernel install --prefix=/path/to/jupyterlab/conda/env --name="my-project-env"  # this assumes that jupyterlab was installed as instructed above
+# Warning: ipykernel does not handle well tilde variable expansion, you should use an absolute path for the --prefix value
+# Example: python -m ipykernel install --prefix=/Users/pierreglaser/.local/miniforge/envs/jupyterlab --name="my-project-env"
+python -m ipykernel install --prefix=/absolute/path/to/jupyterlab/conda/env --name="my-project-env"  # this assumes that jupyterlab was installed as instructed above
 conda deactivate
 
 # make sure this environment is now available
