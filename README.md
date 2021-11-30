@@ -1,19 +1,26 @@
-# Working with (ana)conda
+# Setting up a jupyter environment for python scientific computing inside a SLURM HPC cluster
 
-First, some semantic clarification:
+This file contains instructions to:
 
-## Anaconda
+- easily connect to the Sainsbury Wellcome Center HPC cluster 
+- perform remote interactive scientific development from a SLURM compute node using `jupyterlab` and `conda` environments.
+
+## The `conda` ecosystem
+
+First, some semantic clarification about the `conda` ecoystem:
+
+### Anaconda
 
 - Anaconda, inc. is a for-profit company creating data science software for companies.
-- Among Anaconda's main product are:
+- Among Anaconda's main products are:
   1. An Python distribution called "Anaconda". It comes with > 1500 packages directly, as well as a package manager called conda, that we will present later on.
   The big advantage is that this distribution is that the versions of the packages were carefully chosen to be compatible with each other.
   2. A channel named "anaconda" that mirrors the packages contained in the Anaconda distribution.
 
 
-## Conda
+### Conda
 
-- [https://github.com/conda/conda](conda) is an open source, (binary) package manager. The killer features are as follows:
+- [https://github.com/conda/conda](conda) is an open source, (binary) package manager written in `Python`. The killer features are as follows:
   - Conda offers the possibility to create and manage environments. An environment is a set of packages aware of each other existence (and thus, that can act as dependencies of each other). For instance,
   numpy depends on the python interpreter - scikit-learn depends on numpy. When using a scikit-learn version installed in an environment "env", this scikit-learn will rely on the numpy installed in the same environment "env". This feature is very useful when working on different coding projects: each project may require specific packages versions to work: in that case, you can create one environment per package.
   - Conda comes with a "base" environment, which I recommend you to activate everytime you open a bash shell.
@@ -23,15 +30,15 @@ First, some semantic clarification:
   - The anaconda channel can contain closed source software, such as icc (an intel proprietary C/C++ compiler target for Intel CPU architectures) or MKL (an implementation of BLAS targeted for Intel CPU architectures). Another important channel is conda-forge, which contains only open source packages
 
 
-## Miniconda
+### Miniconda
 
-- Miniconda is a lightweight python distribution that comes with an installer, conda, but far fewer packages than the anaconda distribution.
+- Miniconda contains conda and its dependencies (a minimal `Python` distribution, with far fewer packages than the anaconda distribution) and can be easily installed, as described belos.
 
-## Miniforge
+### Miniforge
 
-- Miniforge is yet another python distribution/installer with small differences w.r.t miniconda, including support for more computer architecture, and the use of conda forge as a default channel.
+- Miniforge fulfills the same purpose as miniforge, but supports more computer architecture, and the use of conda-forge as a default channel.
 
-## Setup instructions
+## How to quickly install a `conda`-based package manager:
 
 ### Requirements
 
@@ -81,9 +88,9 @@ conda activate
 
 Systematically activating your base conda environment at startup will make you live in a user/home environment, and should prevent you from messing with system-wide installs.
 
-# Interactive development using jupyter(lab)
+## Interactive development using jupyter(lab)
 
-## The `jupyter` ecosystem
+### The `jupyter` ecosystem
 
 - "Jupyter" is an organization that created a suite of development tools particularly suited for interactive scientific computing and data analysis.
 - The original Jupyter tool is "jupyter notebook", but a most recent and feature complete program is `jupyterlab`, which is what I personally use.
