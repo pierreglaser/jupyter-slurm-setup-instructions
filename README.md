@@ -159,11 +159,11 @@ You can make your life even simpler by adding the following lines in your ~/.ssh
 Host sgw2
 User <your-cluster-username>
 Hostname sgw2
-ProxyCommand ssh sgw exec nc %h %p
+ProxyCommand ssh sgw1 exec nc %h %p
 IdentityFile  ~/.ssh/id_rsa_gatsby
 LogLevel QUIET
 
-Host sgw
+Host sgw1
 User <your-cluster-username>
 Hostname ssh.swc.ucl.ac.uk
 IdentityFile  ~/.ssh/id_rsa_gatsby
