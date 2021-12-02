@@ -49,29 +49,11 @@ This tutorial is best suited for Unix environments: this means that ideally, you
 
 ### Installation using bash
 
-```bash
-cat << EOF > miniforge_installation_script.sh && source miniforge_installation_script.sh || rm miniforge_installation_script.sh
-#!/usr/bin/env bash
-if [[ $(uname) == "Darwin" ]]; then
-    OS_ALIAS="MacOSX"
-elif [[ $(uname) == "Linux" ]]; then
-    OS_ALIAS="Linux"
-else
-    echo "Unrecognized OS"
-fi
-ARCH=$(uname -m)
+On Unix-like platforms:
 
-echo "ARCH: " $ARCH
-echo "OS: " $OS_ALIAS
-
-MINIFORGE_SCRIPT_NAME="Miniforge3-${OS_ALIAS}-${ARCH}.sh"
-if [[ ${MINIFORGE_SCRIPT_NAME} != "" ]]; then
-    echo "Downloading ${MINIFORGE_SCRIPT_NAME}..."
-    curl -LO "https://github.com/conda-forge/miniforge/releases/latest/download/${MINIFORGE_SCRIPT_NAME}" && bash \
-        ${MINIFORGE_SCRIPT_NAME} -b -p ${HOME}/.local/miniforge
-    [ -f ${MINIFORGE_SCRIPT_NAME} ] && rm ${MINIFORGE_SCRIPT_NAME}
-fi
-EOF
+```
+curl -L -O https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh
+bash Mambaforge-$(uname)-$(uname -m).sh -b -p ${HOME}/.local/miniforge
 ```
 
 Optionally, I recommend that login shells always activate your conda "base"
