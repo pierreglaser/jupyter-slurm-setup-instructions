@@ -138,9 +138,9 @@ ssh-copy-id <your-cluster-username>@ssh.swc.ucl.ac.uk
 You can make your life even simpler by adding the following lines in your ~/.ssh/config file:
 
 ```
-Host sgw2
+Host hpc-gw1
 User <your-cluster-username>
-Hostname sgw2
+Hostname hpc-gw1
 ProxyCommand ssh sgw1 exec nc %h %p
 IdentityFile  ~/.ssh/id_rsa_gatsby
 LogLevel QUIET
@@ -152,7 +152,7 @@ IdentityFile  ~/.ssh/id_rsa_gatsby
 LogLevel QUIET
 ```
 
-Now you can simply run `ssh sgw2` - It should ask you for a password at most once a day.
+Now you can simply run `ssh hpc-gw1` - It should ask you for a password at most once a day.
 
 
 
@@ -186,7 +186,7 @@ set -o errexit
 echo "querying current jupyter sessions..."
 # || true is needed to make grep not exit 1 (triggering the errexit option) if there is no currently
 # running jupyter sessions
-jupyter_host_name=$(ssh sgw2 squeue --name=jupyter --user=<your-cluster-username> -o "%R" | grep -v NODELIST || true)
+jupyter_host_name=$(ssh hpc-gw1 squeue --name=jupyter --user=<your-cluster-username> -o "%R" | grep -v NODELIST || true)
 
 if [[ ${jupyter_host_name} = "" ]]; then
     echo "no jupyter session found, exiting."
