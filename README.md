@@ -172,7 +172,7 @@ Which should launch a bash interactive shell inside a compute node.
 Now, you can activate the jupyterlab environment and launch jupyter lab on the compute node:
 ```
 conda activate jupyterlab
-jupyter lab
+jupyter lab --port=<port-number>  # set a port you use will not cause conflicts with other user
 ```
 
 At this point however, the jupyter server will serve its web application into a port of the compute node, and thus cannot accessed from your machine.
@@ -199,9 +199,9 @@ else
     else
         # XXX: ucl is a custom hostname linking to the swc cluster. You should use your own hostname.
         echo "jupyter session found at ${jupyter_host_name}, setting up port forwarding..."
-        ssh -q -t -t ucl -L 8787:localhost:8787 -L 8789:localhost:8789 ssh -q -N ${jupyter_host_name} -L 8787:localhost:8787 -L 8789:localhost:8789
+        ssh -t hpc-gw1 -L <port-number>:localhost:<port-number> ssh -q -N ${jupyter_host_name} -L <port-number>:localhost:<port-number>
     fi
 fi
 ```
 
-Once you run this script, try to access: `http://127.0.0.1:8789/lab` from your favorite browser.
+Once you run this script, try to access: `http://127.0.0.1:<port-number>/lab` from your favorite browser.
