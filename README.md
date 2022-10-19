@@ -20,7 +20,7 @@ First, some semantic clarification about the `conda` ecoystem:
 
 ### Conda
 
-- [https://github.com/conda/conda](conda) is an open source, (binary) package manager written in `Python`. The killer features are as follows:
+- [conda](https://github.com/conda/conda) is an open source, (binary) package manager written in `Python`. The killer features are as follows:
   - Conda offers the possibility to create and manage environments. An environment is a set of packages aware of each other existence (and thus, that can act as dependencies of each other). For instance,
   numpy depends on the python interpreter - scikit-learn depends on numpy. When using a scikit-learn version installed in an environment "env", this scikit-learn will rely on the numpy installed in the same environment "env". This feature is very useful when working on different coding projects: each project may require specific packages versions to work: in that case, you can create one environment per package.
   - Conda comes with a "base" environment, which I recommend you to activate everytime you open a bash shell.
@@ -32,15 +32,15 @@ First, some semantic clarification about the `conda` ecoystem:
 
 ### Miniconda
 
-Miniconda contains conda and its dependencies (a minimal `Python` distribution, with far fewer packages than the anaconda distribution) and can be easily installed, as described belos.
+[Miniconda](https://docs.conda.io/en/latest/miniconda.html) contains conda and its dependencies (a minimal `Python` distribution, with far fewer packages than the anaconda distribution) and can be easily installed, as described belos.
 
 ### Miniforge
 
-Miniforge fulfills the same purpose as miniforge, but supports more computer architecture, and the use of conda-forge as a default channel.
+[Miniforge](https://github.com/conda-forge/miniforge) fulfills the same purpose as miniforge, but is community-managed, supports more computer architecture, and the use of conda-forge as a default channel.
 
 ### Mambaforge
 
-`mambaforge` is a version of `miniforge` which replaces `conda` by [https://github.com/mamba-org/mamba](mamba), is a reimplementation of conda in C++.
+`mambaforge` is a version of `miniforge` which replaces `conda` by [mamba](https://github.com/mamba-org/mamba), is a reimplementation of conda in C++.
 
 ## How to quickly install a `conda`-based package manager
 
