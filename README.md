@@ -32,13 +32,19 @@ First, some semantic clarification about the `conda` ecoystem:
 
 ### Miniconda
 
-- Miniconda contains conda and its dependencies (a minimal `Python` distribution, with far fewer packages than the anaconda distribution) and can be easily installed, as described belos.
+Miniconda contains conda and its dependencies (a minimal `Python` distribution, with far fewer packages than the anaconda distribution) and can be easily installed, as described belos.
 
 ### Miniforge
 
-- Miniforge fulfills the same purpose as miniforge, but supports more computer architecture, and the use of conda-forge as a default channel.
+Miniforge fulfills the same purpose as miniforge, but supports more computer architecture, and the use of conda-forge as a default channel.
 
-## How to quickly install a `conda`-based package manager:
+### Mambaforge
+
+`mambaforge` is a version of `miniforge` which replaces `conda` by [https://github.com/mamba-org/mamba](mamba), is a reimplementation of conda in C++.
+
+## How to quickly install a `conda`-based package manager
+
+The following section contains instructions on how to setup `mambaforge` in your machine. Similar instructions for other conda distribution variants (such as miniforge or miniconda) can be found online.
 
 ### Requirements
 
@@ -52,6 +58,7 @@ This tutorial is best suited for Unix environments: this means that ideally, you
 On Unix-like platforms:
 
 ```
+mkdir -p ${HOME}/.local/bin
 curl -L -O https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh
 bash Mambaforge-$(uname)-$(uname -m).sh -b -p ${HOME}/.local/miniforge
 ```
