@@ -45,10 +45,6 @@ First, some semantic clarification about the `conda` ecoystem:
 
 [Miniforge](https://github.com/conda-forge/miniforge) fulfills the same purpose as miniforge, but is community-managed, supports more computer architecture, and the use of conda-forge as a default channel.
 
-### Mambaforge
-
-`mambaforge` is a version of `miniforge` which replaces `conda` by [mamba](https://github.com/mamba-org/mamba), is a reimplementation of conda in C++.
-
 </details>
 
 
@@ -98,7 +94,7 @@ Now you can simply run `ssh hpc-gw1` - It should ask you for a password at most 
 
 ## Step 2: Install a `conda`-based package manager in the cluster
 
-The following section contains instructions on how to setup `mambaforge` in your machine. Similar instructions for other conda distribution variants (such as miniforge or miniconda) can be found online.
+The following section contains instructions on how to setup `miniforge` in your machine. Similar instructions for other conda distribution variants (such as miniforge or miniconda) can be found online.
 
 
 ### Installation using bash
@@ -106,8 +102,8 @@ The following section contains instructions on how to setup `mambaforge` in your
 On Unix-like platforms:
 
 ```
-mkdir -p ${HOME}/.local/bin
-curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+mkdir -p ${HOME}/.local/bin && \
+curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" && \
 bash Miniforge3-$(uname)-$(uname -m).sh
 ```
 
@@ -116,7 +112,7 @@ environment by appending these lines to the `$HOME/.profile` file  (if on Linux,
 
 ```sh
 cat <<EOF >> $HOME/.profile
-eval "\$("\$HOME/.local/mambaforge/bin/conda" 'shell.bash' 'hook')"
+eval "\$("\$HOME/.local/miniforge/bin/conda" 'shell.bash' 'hook')"
 EOF
 ```
 
@@ -169,7 +165,7 @@ Here, we show how to create an environment for my project "my-project", and link
 ```sh
 # conda create -n <my-project-env> ipykernel -y  # if you don't have an existing project environment 
 conda install -n <my-project-env> ipykernel  # otherwise
-conda run -n "<my-project-env>" python -m ipykernel install --prefix="$HOME/.local/mambaforge/envs/jupyterlab" --name="<my-project-env>"
+conda run -n "<my-project-env>" python -m ipykernel install --prefix="$HOME/.local/miniforge/envs/jupyterlab" --name="<my-project-env>"
 
 # make sure this environment is now available
 conda activate jupyterlab && jupyter lab
