@@ -5,7 +5,14 @@ This file contains instructions to:
 - easily connect to the Sainsbury Wellcome Center HPC cluster 
 - perform remote interactive scientific development from a SLURM compute node using `jupyterlab` and `conda` environments.
 
-## The `conda` ecosystem
+This tutorial is best suited for Unix environments: this means that ideally, your PC runs one of the following:
+- MacOS
+- a Linux distribution
+- a Windows version containing Windows Subsystem for Linux (WSL).
+
+
+<details>
+<summary><h2>Preface: details about the <code>conda</code> ecosystem</h2></summary>
 
 First, some semantic clarification about the `conda` ecoystem:
 
@@ -42,99 +49,25 @@ First, some semantic clarification about the `conda` ecoystem:
 
 `mambaforge` is a version of `miniforge` which replaces `conda` by [mamba](https://github.com/mamba-org/mamba), is a reimplementation of conda in C++.
 
-## How to quickly install a `conda`-based package manager
+</details>
 
-The following section contains instructions on how to setup `mambaforge` in your machine. Similar instructions for other conda distribution variants (such as miniforge or miniconda) can be found online.
 
-### Requirements
+## Step 1: Access the SWC cluster
 
-This tutorial is best suited for Unix environments: this means that ideally, your PC runs one of the following:
-- MacOS
-- a Linux distribution
-- a Windows version containing Windows Subsystem for Linux (WSL).
+SWC has a set of computing resources administered by the `slurm` cluster manager.
+The simplest way to connect to the cluster is to executre the following shell command:
 
-### Installation using bash
-
-On Unix-like platforms:
-
-```
-mkdir -p ${HOME}/.local/bin
-curl -L -O https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh
-bash Mambaforge-$(uname)-$(uname -m).sh -b -p ${HOME}/.local/miniforge
+```bash
+ssh <your-cluster-username>@ssh.swc.ucl.ac.uk -t 'ssh hpc-gw1'
 ```
 
-Optionally, I recommend that login shells always activate your conda "base"
-environment by appending these lines to your shell rc file (~/.bashrc in Linux, ~/.bash_profile on MacOS, ~/.profile if none of these files exists):
-
-```sh
-# $HOME/.local/bin is not included in MacOS $PATH by default
-if [[ $(uname) == "Darwin" ]]; then
-    export PATH=$HOME/.local/bin:$PATH
-fi
-source $HOME/.local/miniforge/etc/profile.d/conda.sh
-conda activate
-```
-
-Systematically activating your base conda environment at startup will make you live in a user/home environment, and should prevent you from messing with system-wide installs.
-
-## Interactive development using jupyter(lab)
-
-### The `jupyter` ecosystem
-
-- "Jupyter" is an organization that created a suite of development tools particularly suited for interactive scientific computing and data analysis.
-- The original Jupyter tool is "jupyter notebook", but a most recent and feature complete program is `jupyterlab`, which is what I personally use.
-- VSCode provides "native" a `jupyter` notebook experience as part of the VSCode Python extension, and I heard it is good. Setup guides should be available online.
+which should start a `bash` interactive shell on the HPC gateway node. 
 
 
-## Setup instructions
+<details>
+<summary><h3>Quality of life bonus: avoid typing your password at each ssh connection using ssh keys</h3></summary>
 
-### Installing `jupyterlab`
-
-`jupyter` is a development tool, and as such its installation should be decoupled from your conda environment projects. Thus, I recommend you use a specific environment
-to install `jupyterlab`:
-
-```sh
-conda create --name jupyterlab jupyterlab
-```
-
-To run `jupyterlab` from a fresh bash shell, either activate the `jupyterlab` environment before typing the command:
-
-```sh
-conda activate jupyterlab && jupyter lab
-```
-
-Or alternatively (less recommended), you can symlink the `jupyterlab` command into an entry available in your $PATH:
-
-```sh
-# you only need to do this once:
-conda activate jupyterlab
-ln -s $(which jupyter) ~/.local/bin/jupyter
-conda deactivate
-```
-
-### Pointing environments to a `jupyterlab` using ipykernel
-
-To let `jupyterlab` know of a virtual environment present in your machine, you need to use `ipykernel`.
-Here, we show how to create an environment for my project "my-project", and link it to `jupyterlab`:
-
-```sh
-conda create -n my-project-env ipykernel -y  # whenever you create a new environment, install ipykernel along side it to later connect it with jupyter..
-conda activate my-project-env
-# Warning: ipykernel does not handle well tilde variable expansion, you should use an absolute path for the --prefix value
-# Example: python -m ipykernel install --prefix=/Users/pierreglaser/.local/miniforge/envs/jupyterlab --name="my-project-env"
-python -m ipykernel install --prefix=/absolute/path/to/jupyterlab/conda/env --name="my-project-env"  # this assumes that jupyterlab was installed as instructed above
-conda deactivate
-
-# make sure this environment is now available
-conda activate jupyterlab && jupyter lab
-```
-
-## Working on the cluster
-
-### Configuring ssh
-
-SWC has a set of computing resources administered by the `slurm` cluster manager. The cluster is accessed via a login node, `ssh.swc.ucl.ac.uk`
-In order to connect to this login node without having to type your password every time, you can configure your ssh connections by creating a ssh private/public key pair
+In order to connect to `hpc-gw1` without having to type your password every time, you can configure your ssh connections by creating a ssh private/public key pair
 
 ```sh
 cd ~/.ssh
@@ -161,14 +94,111 @@ LogLevel QUIET
 
 Now you can simply run `ssh hpc-gw1` - It should ask you for a password at most once a day.
 
+</details>
+
+## Step 2: Install a `conda`-based package manager in the cluster
+
+The following section contains instructions on how to setup `mambaforge` in your machine. Similar instructions for other conda distribution variants (such as miniforge or miniconda) can be found online.
 
 
-### Running jupyter from a node of the compute cluster
+### Installation using bash
 
-Running jupyter remotely will be useful when doing interactive work using GPUs, or larger scale data analysis.
-1. The first thing you need to do is installing conda and jupyterlab in the cluster.
-   Your $HOME directory of the login node of the cluster is part of a network file system (nfs), that is mounted on all nodes of the cluster. Thus, installing programs in your $HOME available to all nodes can be done from any node, including the login node (but don't do any compute work on the login node though!), and the installation steps of conda/jupyterlab done locally previously port transparently to the cluster setting.
-2.  As said before, you should not run any compute-heavy programs on the login node. Instead, you should request a node to slurm using the following command:
+On Unix-like platforms:
+
+```
+mkdir -p ${HOME}/.local/bin
+curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+bash Miniforge3-$(uname)-$(uname -m).sh
+```
+
+Optionally, I recommend that the login interactive shell that is started upon entering the cluster always activates your conda "base"
+environment by appending these lines to the `$HOME/.profile` file  (if on Linux, `$HOME/.bash_profile` on [MacOS](https://apple.stackexchange.com/questions/51036/what-is-the-difference-between-bash-profile-and-bashrc))
+
+```sh
+cat <<EOF >> $HOME/.profile
+eval "\$("\$HOME/.local/mambaforge/bin/conda" 'shell.bash' 'hook')"
+EOF
+```
+
+Systematically activating your base conda environment at startup will make you live in a user/home environment, and should prevent you from messing with system-wide installs.
+
+## Step 3: install jupyterlab
+
+<details>
+<summary><h3>Preface: The <code>jupyter</code> ecosystem</h3></summary>
+
+- "Jupyter" is an organization that created a suite of development tools particularly suited for interactive scientific computing and data analysis.
+- The original Jupyter tool is "jupyter notebook", but a most recent and feature complete program is `jupyterlab`, which is what I personally use.
+- VSCode provides "native" a `jupyter` notebook experience as part of the VSCode Python extension, and I heard it is good. Setup guides should be available online.
+
+</details>
+
+### Installing `jupyterlab`, option 1: The dead-simple way
+
+The simple but slightly dirty way to install jupyterlab is to install it on one of your project's environment, by running
+
+```sh
+conda activate <my-project-env> && mamba install jupyterlab
+```
+
+You can then get started using 
+
+```
+jupyter lab
+```
+
+
+<details>
+<summary><h3>Installing <code>jupyterlab</code>, option 2 (cleaner):</h3></summary>
+
+#### Instaling a standalone jupyterlab 
+
+Since `jupyter` is a development tool, its installation should ideally be decoupled from your conda environment projects.
+Thus, I recommend you use a specific environment to install `jupyterlab`:
+
+```sh
+conda create --name jupyterlab jupyterlab
+```
+
+
+#### Pointing environments to a `jupyterlab` using ipykernel
+
+To let `jupyterlab` know of a virtual environment present in your machine, you need to use `ipykernel`.
+Here, we show how to create an environment for my project "my-project", and link it to `jupyterlab`:
+
+```sh
+# conda create -n <my-project-env> ipykernel -y  # if you don't have an existing project environment 
+conda install -n <my-project-env> ipykernel  # otherwise
+conda run -n "<my-project-env>" python -m ipykernel install --prefix="$HOME/.local/mambaforge/envs/jupyterlab" --name="<my-project-env>"
+
+# make sure this environment is now available
+conda activate jupyterlab && jupyter lab
+
+
+
+#### Running jupyterlab
+
+To run `jupyterlab` from a fresh bash shell, either activate the `jupyterlab` environment before typing the command:
+
+```sh
+conda activate jupyterlab && jupyter lab
+```
+
+Or alternatively (less recommended), you can symlink the `jupyterlab` command into an entry available in your $PATH:
+
+```sh
+# you only need to do this once:
+conda activate jupyterlab
+ln -s $(which jupyter) ~/.local/bin/jupyter
+conda deactivate
+```
+
+</details>
+
+
+## Step 4: Run jupyter lab ina compute node
+
+You should not run any compute-heavy programs on the gateway node, `hpw-gw1`. Instead, you should request a node to slurm using the following command:
 
 ```sh
 srun --job-name=jupyter --pty /bin/bash -l
